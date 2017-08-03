@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     while video_capture.isOpened():
         # grabs and retrieves the next frame
-        ret, frame = video_capture.read()
+        (ret, frame) = video_capture.read()
         if ret:
             # clip the drone video from 54 seconds to 104 seconds
             # only needed to do this once
