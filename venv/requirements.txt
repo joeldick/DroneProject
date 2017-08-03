@@ -1,0 +1,15 @@
+ Volume in drive C has no label.
+ Volume Serial Number is FC2A-3DB7
+
+ Directory of C:\Users\Owner\PycharmProjects\DroneProject\venv
+
+2017-08-03  11:23 AM    <DIR>          .
+2017-08-03  11:23 AM    <DIR>          ..
+2017-08-03  10:58 AM    <DIR>          Include
+2017-08-03  10:58 AM    <DIR>          Lib
+2017-08-03  11:00 AM                60 pip-selfcheck.json
+2017-08-03  10:58 AM               120 pyvenv.cfg
+2017-08-03  11:23 AM                 0 requirements.txt
+2017-08-03  11:22 AM    <DIR>          Scripts
+               3 File(s)            180 bytes
+               5 Dir(s)  854,867,202,048 bytes free
