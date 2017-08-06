@@ -4,8 +4,8 @@ from matplotlib import pyplot as plt
 import time
 
 if __name__ == "__main__":
-    video_capture = cv2.VideoCapture('drone_video.avi')
-    #video_capture = cv2.VideoCapture('short_drone_video.avi')
+    #video_capture = cv2.VideoCapture('drone_video.avi')
+    video_capture = cv2.VideoCapture('short_drone_video.avi')
 
     # get information about video
     fps = video_capture.get(cv2.CAP_PROP_FPS)
@@ -17,20 +17,12 @@ if __name__ == "__main__":
     width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    # create video output
-    #fourcc = cv2.VideoWriter_fourcc('H','2','6','4')
-    #video_output = cv2.VideoWriter('short_drone_video.avi', fourcc, fps, (width,height))
-
     frameCounter = 0
 
     while video_capture.isOpened():
         # grabs and retrieves the next frame
         (ret, frame) = video_capture.read()
         if ret:
-            # clip the drone video from 54 seconds to 104 seconds
-            # only needed to do this once
-            #if (frameCounter>54*30 and frameCounter<104*30):
-            #    video_output.write(frame)
             frameCounter += 1
 
             frame_HSV = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -54,5 +46,4 @@ if __name__ == "__main__":
     video_length = frameCounter/fps
     print("length: " + str(video_length) + " seconds")
     video_capture.release()
-    #video_output.release()
-    #cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
