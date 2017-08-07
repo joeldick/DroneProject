@@ -21,12 +21,7 @@ if __name__ == "__main__":
     #hsv_plot = plt.imshow(roi_hsv)
     #plt.show()
 
-    # create a mask for only orange pixels
-    # pixel range was figured out by looking at plot above
-    # [Actually, the purpose of this line is not supposed to be
-    # to filter out only orange pixels, but to filter out
-    # low light images. The range should be [0,60,32] - [180,255,255]
-    # or some other such high pass filter
+    # Filter out low light pixels
     mask = cv2.inRange(roi_hsv, np.array([0, 60, 32]), np.array([180, 255, 255]))
     #mask_plot = plt.imshow(mask)
     #plt.show()
@@ -46,6 +41,9 @@ if __name__ == "__main__":
     # Then, use meanShift to move frame to area of frame
     # that matches the backprojection best
 
+    # first set termination criteria to 10 iterations or moved by at least 1 pixel
+    termination_crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1)
+
     while video_capture.isOpened():
         (ret, frame) = video_capture.read()
 
@@ -54,8 +52,6 @@ if __name__ == "__main__":
         backprojection = cv2.calcBackProject([frame_hsv], [0], roi_hist, [0, 180], 1)
 
         # here we apply meanshift
-        # termination criteria is 10 iterations or move by at least 1 pixel
-        termination_crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1)
         ret, track_window = cv2.CamShift(backprojection, track_window, termination_crit)
 
         # now we have our new track window
