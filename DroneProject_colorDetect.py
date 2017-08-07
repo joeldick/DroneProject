@@ -4,8 +4,8 @@ from matplotlib import pyplot as plt
 import time
 
 if __name__ == "__main__":
-    #video_capture = cv2.VideoCapture('drone_video.avi')
-    video_capture = cv2.VideoCapture('short_drone_video.avi')
+    video_capture = cv2.VideoCapture('drone_video.avi')
+    #video_capture = cv2.VideoCapture('short_drone_video.avi')
 
     # get information about video
     fps = video_capture.get(cv2.CAP_PROP_FPS)
@@ -27,8 +27,8 @@ if __name__ == "__main__":
 
             frame_HSV = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-            lower_orange = np.array([18, 64, 50])
-            upper_orange = np.array([35, 255, 255])
+            lower_orange = np.array([24, 112, 230])
+            upper_orange = np.array([31, 170, 255])
 
             mask = cv2.inRange(frame_HSV, lower_orange, upper_orange)
             frame_masked = cv2.bitwise_and(frame, frame, mask=mask)
