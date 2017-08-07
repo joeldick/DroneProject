@@ -56,7 +56,7 @@ if __name__ == "__main__":
         # here we apply meanshift
         # termination criteria is 10 iterations or move by at least 1 pixel
         termination_crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1)
-        ret, track_window = cv2.meanShift(backprojection, track_window, termination_crit)
+        ret, track_window = cv2.CamShift(backprojection, track_window, termination_crit)
 
         # now we have our new track window
         # draw it on the frame
