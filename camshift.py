@@ -10,11 +10,17 @@ if __name__ == "__main__":
     (ret, frame) = video_capture.read()
 
     #set initial location of orange ball
-    y_init, h, x_init, w = (408, 20, 680, 20)
-    track_window = (x_init, y_init, w, h)
+    x_init, y_init, w, h = (680, 408, 20, 20)
+    x, y, w, h = cv2.selectROI(frame, False)
+    bbox = (int(x), int(y), int(w), int(h))
+    print(bbox)
+    cv2.destroyAllWindows()
+    #x_init, y_init, w, h = bbox
+    #print(str(bbox))
+    #track_window = (x_init, y_init, w, h)
 
     # select range of image around orange golfball
-    roi = frame[y_init:y_init+h, x_init:x_init+w]
+    roi = frame[int(bbox[1]):int(bbox[1]+bbox[3]), int(bbox[0]):int(bbox[0]+bbox[2])]
 
     # convert to HSV so we can see what the HSV for orange is
     roi_hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
@@ -52,11 +58,11 @@ if __name__ == "__main__":
         backprojection = cv2.calcBackProject([frame_hsv], [0], roi_hist, [0, 180], 1)
 
         # here we apply meanshift
-        ret, track_window = cv2.CamShift(backprojection, track_window, termination_crit)
+        ret, bbox = cv2.CamShift(backprojection, bbox, termination_crit)
 
         # now we have our new track window
         # draw it on the frame
-        x, y, w, h = track_window
+        x, y, w, h = bbox
         img_rect = cv2.rectangle(frame, (x, y), (x + w, y + h), 255, 2)
         cv2.imshow('img_rect', img_rect)
 
