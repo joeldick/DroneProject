@@ -12,9 +12,10 @@ if __name__ == "__main__":
     #set initial location of orange ball
     x_init, y_init, w, h = (680, 408, 20, 20)
     x, y, w, h = cv2.selectROI(frame, False)
+    cv2.destroyAllWindows()
     bbox = (int(x), int(y), int(w), int(h))
     print(bbox)
-    cv2.destroyAllWindows()
+
     #x_init, y_init, w, h = bbox
     #print(str(bbox))
     #track_window = (x_init, y_init, w, h)
