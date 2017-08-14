@@ -4,27 +4,46 @@ from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
 
+    # ask user to choose file
+    filename = input("Type filename, or 'q' for 'quit': ")
+    if filename == 'q':
+        exit(0)
+    video_capture = cv2.VideoCapture(filename)
+
+    # ask user to choose tracking algorithm
+    algorithm = int(input("Select tracking method - Meanshift(1), Camshift(2), MIL(3), KCF(4): "))
     while True:
-        filename = input("Type filename, or 'q' for 'quit': ")
-
-        if filename == 'q':
+        if algorithm == 1:
+            print("Chose meanshift")
             break
+        elif algorithm == 2:
+            print("Chose camshift")
+            break
+        elif algorithm == 3:
+            print("Chose MIL")
+            break
+        elif algorithm == 4:
+            print("Chose KCF")
+            break
+        else:
+            print("Invalid selection")
 
-        video_capture = cv2.VideoCapture(filename)
-
-        # ask user for starting frame
+    while True:
+        # ask user for which frame to start from
         num_frames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
         if num_frames is 0:
             print("Video has no frames.")
             break
         try:
-            start_frame = int(input("Type starting frame [0 - " + str(num_frames - 1) + "]: "))
+            start_frame = int(input("Type starting frame [0 - " + str(num_frames - 1) + "]. -1 to quit: "))
         except:
             start_frame = 0
+        if start_frame == -1:
+            break
 
         # read first frame
         video_capture.set(cv2.CAP_PROP_POS_FRAMES, int(start_frame))
-        (ret, frame) = video_capture.read()
+        ret, frame = video_capture.read()
 
         if not ret:
             print("Not able to read file.")
@@ -35,22 +54,8 @@ if __name__ == '__main__':
         x, y, w, h = cv2.selectROI(frame, False)
         cv2.destroyAllWindows()
 
-        # ask user to choose tracking algorithm
-        algorithm = int(input("Select tracking method - Meanshift(1), Camshift(2), MIL(3), KCF(4): "))
-        if algorithm == 1:
-            print("meanshift")
-        elif algorithm == 2:
-            print("camshift")
-        elif algorithm == 3:
-            print("MIL")
-        elif algorithm == 4:
-            print("KCF")
-        else:
-            print("Invalid selection")
-            break
-
         if algorithm == 1 or algorithm == 2:
-            print("Meanshift/Camshift...")
+            print("Running Meanshift/Camshift...")
 
             bbox = (int(x), int(y), int(w), int(h))
             roi = frame[bbox[1]:bbox[1] + bbox[3], bbox[0]:bbox[0] + bbox[2]]
@@ -89,7 +94,10 @@ if __name__ == '__main__':
 
                 if cv2.waitKey(1) == ord('q'):
                     break
-
+                elif cv2.waitKey(1) == ord('p'):
+                    print("Frame: " + str(video_capture.get(cv2.CAP_PROP_POS_FRAMES)))
+                    plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+                    plt.show()
         elif algorithm == 3 or algorithm == 4:
             # create tracker
             if algorithm == 3:
@@ -127,8 +135,12 @@ if __name__ == '__main__':
 
                 if cv2.waitKey(1) == ord('q'):
                     break
+                elif cv2.waitKey(1) == ord('p'):
+                    print("Frame: " + str(video_capture.get(cv2.CAP_PROP_POS_FRAMES)))
+                    plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+                    plt.show()
         else:
             print("invalid choice")
 
         cv2.destroyAllWindows()
-        video_capture.release()
+    video_capture.release()

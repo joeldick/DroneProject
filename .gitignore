@@ -1,4 +1,5 @@
 /venv/
-!/venv/Scripts/openh264-1.6.0-win32msvc.dll
+/.idea/
 *.avi
 *.mp4
+
