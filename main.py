@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
 
+
     # ask user to choose file
     filename = input("Type filename, or 'q' for 'quit': ")
     if filename == 'q':
