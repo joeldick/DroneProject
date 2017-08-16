@@ -2,10 +2,14 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import time
+from tkinter import Tk
+from tkinter import filedialog
 
 if __name__ == "__main__":
-    video_capture = cv2.VideoCapture('drone_video.avi')
-    # video_capture = cv2.VideoCapture('short_drone_video.avi')
+    # ask user to choose file
+    Tk().withdraw()
+    filename = filedialog.askopenfilename()
+    video_capture = cv2.VideoCapture(filename)
 
     # get information about video
     fps = video_capture.get(cv2.CAP_PROP_FPS)
@@ -19,7 +23,7 @@ if __name__ == "__main__":
 
     # create video output
     fourcc = cv2.VideoWriter_fourcc('H', '2', '6', '4')
-    video_output = cv2.VideoWriter('person_drone_video.avi', fourcc, fps, (width, height))
+    video_output = cv2.VideoWriter(filename, fourcc, fps, (width, height))
 
     frameCounter = 0
 

@@ -1,14 +1,15 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+from tkinter import Tk
+from tkinter import filedialog
 
 if __name__ == '__main__':
 
 
     # ask user to choose file
-    filename = input("Type filename, or 'q' for 'quit': ")
-    if filename == 'q':
-        exit(0)
+    Tk().withdraw()
+    filename = filedialog.askopenfilename()
     video_capture = cv2.VideoCapture(filename)
 
     # ask user to choose tracking algorithm
@@ -108,9 +109,6 @@ if __name__ == '__main__':
             # todo second time around it doesn't recreate tracker with new algorithm. I think it needs to be destroyed
 
             # initialize tracker bounding box
-            # person in person_drone_video.avi
-            # bbox = (708, 444, 7, 7)
-            # golf ball in drone_video.avi
             bbox = (int(x), int(y), int(w), int(h))
 
             ok = tracker.init(frame, bbox)

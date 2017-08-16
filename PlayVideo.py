@@ -2,10 +2,14 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import time
+from tkinter import Tk
+from tkinter import filedialog
 
 if __name__ == "__main__":
-    #video_capture = cv2.VideoCapture('drone_video.avi')
-    video_capture = cv2.VideoCapture('short_drone_video.avi')
+    # ask user to choose file
+    Tk().withdraw()
+    filename = filedialog.askopenfilename()
+    video_capture = cv2.VideoCapture(filename)
 
     # get information about video
     fps = video_capture.get(cv2.CAP_PROP_FPS)

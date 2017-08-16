@@ -1,13 +1,15 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+from tkinter import Tk
+from tkinter import filedialog
 
 if __name__ == '__main__':
 
     # ask user to choose file
-    filename = input("Type filename, or 'q' for 'quit': ")
-    if filename == 'q':
-        exit(0)
+    Tk().withdraw()
+    filename = filedialog.askopenfilename()
+    video_capture = cv2.VideoCapture(filename)
     video_capture = cv2.VideoCapture(filename)
 
     while True:
