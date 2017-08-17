@@ -9,6 +9,7 @@ if __name__ == "__main__":
     # ask user to choose file
     Tk().withdraw()
     filename = filedialog.askopenfilename()
+    print("filename: " + filename)
     video_capture = cv2.VideoCapture(filename)
 
     while True:
@@ -23,10 +24,12 @@ if __name__ == "__main__":
         if start_frame == -1:
             break
 
-        video_capture.set(cv2.CAP_PROP_POS_FRAMES, int(start_frame))
-        (ret, frame) = video_capture.read()
+        video_capture.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
+        ret, frame = video_capture.read()
 
         plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        plt.show()
+        plt.show(block=False)
+        time.sleep(2)
+        plt.close()
 
     video_capture.release()

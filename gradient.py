@@ -21,7 +21,7 @@ if __name__ == '__main__':
         try:
             start_frame = int(input("Type starting frame [0 - " + str(num_frames - 1) + "]. -1 to quit: "))
         except:
-            start_frame = -1
+            start_frame = 0
         if start_frame == -1:
             break
 

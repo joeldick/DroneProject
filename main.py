@@ -1,16 +1,27 @@
 import cv2
 import numpy as np
+import time
 from matplotlib import pyplot as plt
+import tkinter as tk
 from tkinter import Tk
 from tkinter import filedialog
 
 if __name__ == '__main__':
-
-
     # ask user to choose file
     Tk().withdraw()
     filename = filedialog.askopenfilename()
+    print("filename: " + filename)
     video_capture = cv2.VideoCapture(filename)
+
+    # get resolution of original video
+    width_original = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height_original = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    # get resolution of user's display
+    screen_width = Tk().winfo_screenwidth()
+    screen_height = Tk().winfo_screenheight()
+    # calculate conversion factor
+    screen_to_original_width = width_original/screen_width
+    screen_to_original_height = height_original / screen_height
 
     # ask user to choose tracking algorithm
     algorithm = int(input("Select tracking method - Meanshift(1), Camshift(2), MIL(3), KCF(4): "))
@@ -44,7 +55,7 @@ if __name__ == '__main__':
             break
 
         # read first frame
-        video_capture.set(cv2.CAP_PROP_POS_FRAMES, int(start_frame))
+        video_capture.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
         ret, frame = video_capture.read()
 
         if not ret:
@@ -53,8 +64,14 @@ if __name__ == '__main__':
 
         # ask user to select object to track
         print("Select object to track")
-        x, y, w, h = cv2.selectROI(frame, False)
+        frame_resized = cv2.resize(frame, (screen_width, screen_height))
+        x, y, w, h = cv2.selectROI(frame_resized, False)
         cv2.destroyAllWindows()
+        # do some math to convert coordinates from resized resolution to original resolution
+        x = x*screen_to_original_width
+        y = y*screen_to_original_height
+        w = w*screen_to_original_width
+        h = h*screen_to_original_height
 
         if algorithm == 1 or algorithm == 2:
             print("Running Meanshift/Camshift...")
@@ -92,7 +109,8 @@ if __name__ == '__main__':
                 # draw it on the frame
                 x, y, w, h = bbox
                 frame = cv2.rectangle(frame, (x, y), (x + w, y + h), 255, 2)
-                cv2.imshow('frame', frame)
+                frame_resized = cv2.resize(frame, (screen_width, screen_height))
+                cv2.imshow('frame', frame_resized)
 
                 if cv2.waitKey(1) == ord('q'):
                     break
@@ -116,8 +134,6 @@ if __name__ == '__main__':
             p1 = (int(bbox[0]), int(bbox[1]))
             p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
             cv2.rectangle(frame, p1, p2, (0, 0, 255))
-            # plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-            # plt.show()
 
             while video_capture.isOpened():
                 ret, frame = video_capture.read()
@@ -130,7 +146,8 @@ if __name__ == '__main__':
                     p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
                     cv2.rectangle(frame, p1, p2, (0, 0, 255))
 
-                cv2.imshow('frame', frame)
+                frame_resized = cv2.resize(frame, (screen_width, screen_height))
+                cv2.imshow('frame', frame_resized)
 
                 if cv2.waitKey(1) == ord('q'):
                     break
@@ -140,6 +157,6 @@ if __name__ == '__main__':
                     plt.show()
         else:
             print("invalid choice")
-
         cv2.destroyAllWindows()
+
     video_capture.release()
