@@ -1,4 +1,8 @@
 /venv/
 /.idea/
 *.avi
+*.AVI
 *.mp4
+*.MP4
+*.jpg
+*.JPG
